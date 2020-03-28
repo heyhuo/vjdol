@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>评判结果</title>
+    <link rel="stylesheet" media="screen" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+    <link rel="stylesheet" href="css/createTopic.css">
+    <!--<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">-->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="bootstrap3/css/bootstrap.min.css">
+</head>
+<body>
+
+<!-- Fixed navbar -->
+<div class="navbar navbar-inverse" style="background:#3d3d3d;z-index: 100">
+    <div class="container">
+        <div class="navbar-header">
+            <!-- Button for smallest screens -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span
+                    class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+            <a class="navbar-brand" href="index.html">
+                <img src="assets/images/logo3.png" style="margin: -5px auto;width:230px;height: 78px;"
+                     alt="Techro HTML5 template"></a>
+        </div>
+        <div style="margin: 30px 100px 20px -100px" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav pull-right mainNav">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="examList.html">考试</a></li>
+                <li class="dropdown">
+                    <a href="about.html" class="dropdown-toggle" data-toggle="dropdown">题库</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="topicList.html">研究生入学考试</a></li>
+                        <li><a href="topicList.html">机试甲级题目</a></li>
+                        <li><a href="topicList.html">机试乙级题目</a></li>
+                    </ul>
+
+                </li>
+                <li><a href="login_register.html">登录</a></li>
+            </ul>
+        </div>
+        <!--/.nav-collapse -->
+    </div>
+</div>
+<!-- /.navbar -->
+
+
+<div class="editArea" style="width: 1100px">
+    <!--标题区域-->
+    <table style="border-style: solid;border-width: 1px;border-radius:10px;"
+           class="table table-hover table-bordered table-striped">
+        <thead style="background-color: #006a94;color: white;font-size: 16px;font-style: italic;letter-spacing: 6px;">
+        <tr>
+            <th>测试点号</th>
+            <th>运行结果</th>
+            <th>运行时间</th>
+            <th>运行内存</th>
+            <th>测试点得分</th>
+        </tr>
+        </thead>
+
+        <tbody id="judgeResultListBody">
+
+        </tbody>
+    </table>
+
+    <!--完成编辑按钮-->
+    <div class="complete">
+        <button onclick="returnList()" type="button" class="btn" id="judgeBack">
+            返回列表
+        </button>
+    </div>
+</div>
+
+</body>
+<script>
+
+    var id = 0;
+    window.onload = function () {
+        $(".insertButton").hide();
+        id = window.location.search.substr(1, id.length);
+        var stu_no = "1";
+        var topic_id = id;
+        queryJudgeResultByid(topic_id, stu_no);
+    }
+
+    //返回列表
+    function returnList() {
+        window.location.href = "examList.html";
+        $(".insertButton").hide();
+    }
+
+    //查询结果列表
+    function queryJudgeResultByid(topic_id, stu_no) {
+        var d = {};
+        d.topicId = topic_id;
+        d.stuNo = stu_no;
+        $.ajax({
+            url: "/queryJudgeResultByid",
+            data: JSON.stringify(d),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            success: function (judgeResult) {
+                if (judgeResult.success) {
+                    var list = judgeResult.message;
+                    var len = list.length;
+                    var jdResult = $("#judgeResultListBody");
+                    for (var i = 0; i < len; i++) {
+                        var tip = "";
+                        var font_color;
+                        if (list[i].judge_result == "答案正确") {
+                            tip = "class='success'";
+                            font_color = "style='color:#30701F;'";
+                        } else if (list[i].judge_result == "编译错误") {
+                            tip = "class='warning'";
+                            font_color = "style='color:#CB7B2D;'";
+                        } else if (list[i].judge_result == "段错误") {
+                            tip = "class='info'";
+                            font_color = "style='color:#007EB4;'";
+                        } else if (list[i].judge_result == "运行超时") {
+                            tip = "class='info'";
+                            font_color = "style='color:#BF722D;'";
+                        }else if(list[i].judge_result == "内存溢出"){
+                            tip = "class='info'";
+                            font_color = "style='color:#823C8C;'";
+                        }
+                        else {
+                            tip = "class='danger'";
+                            font_color = "style='color:#C41E11;'";
+                        }
+                        var tr = "<tr " + font_color + " " + tip + ">\n" +
+                            "            <td style='letter-spacing: 2px'>" + list[i].point_id + "</td>\n" +
+                            "            <td >" + list[i].judge_result + "</td>\n" +
+                            "            <td style='letter-spacing: 2px'>" + list[i].time_limit + "(ms)</td>\n" +
+                            "            <td style='letter-spacing: 2px'>" + list[i].memory_limit + "(KB)</td>\n" +
+                            "            <td style='letter-spacing: 2px'>" + list[i].point_grade + "</td>\n" +
+                            "        </tr>";
+                        jdResult.append(tr);
+                    }
+                } else {
+                    alert("失败");
+                }
+
+            }, error: function (judgeResult) {
+                alert("emmmmmm....数据库还没准备好");
+            }
+        });
+    }
+
+
+</script>
+</html>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.valcano.vjdol.entity.ExamPaper">
+
+    <!--插入试卷-->
+    <insert id="insertExamPaper">
+        INSERT INTO tb_exam_paper(stu_no, topic_id) VALUES (#{stu_no},#{topic_id})
+    </insert>
+
+    <!--通过学号、题号、测试点号查询试卷-->
+    <select id="queryExamByStuNoTopicIdPointId" resultType="ExamPaper">
+        SELECT topic_id,stu_no,paper_id,point_id,result,time_limit,memory_limit FROM tb_exam_paper WHERE topic_id=#{topic_id} AND stu_no=#{stu_no} AND point_id=#{point_id}
+    </select>
+
+    <!--通过学号、题号查询试卷-->
+    <select id="queryExamByStuNoTopicId" resultType="ExamPaper">
+        SELECT topic_id,stu_no,paper_id,point_id,result,judge_result,time_limit,memory_limit,point_grade FROM tb_exam_paper WHERE topic_id=#{topic_id} AND stu_no=#{stu_no}
+    </select>
+
+    <!--更新运行结果-->
+    <update id="updateResult">
+        UPDATE tb_exam_paper SET result=#{result} WHERE topic_id=#{topic_id} AND stu_no=#{stu_no} AND point_id=#{point_id}
+    </update>
+
+    <update id="updateErrorResult">
+        UPDATE tb_exam_paper SET result=#{result},point_grade=0,time_limit=0,memory_limit=0,judge_result=#{judge_result} WHERE topic_id=#{topic_id} AND stu_no=#{stu_no}
+    </update>
+
+    <!--更新所有-->
+    <update id="updateAllResult">
+        UPDATE tb_exam_paper SET result=#{result},time_limit=#{time_limit},memory_limit=#{memory_limit} WHERE topic_id=#{topic_id} AND stu_no=#{stu_no} AND  point_id=#{point_id}
+    </update>
+
+    <!--更新评判结果-->
+    <update id="updateJudgeResult">
+        UPDATE tb_exam_paper SET judge_result=#{judge_result},point_grade=#{point_grade} WHERE topic_id=#{topic_id} AND stu_no=#{stu_no} AND point_id=#{point_id}
+    </update>
+
+    <!--更新运行时间-->
+    <update id="updateExamPaperTime">
+        UPDATE tb_exam_paper SET time_limit=#{time_limit} WHERE topic_id=#{topic_id} AND stu_no=#{stu_no} AND point_id=#{point_id}
+    </update>
+
+    <!--插入运行结果-->
+    <insert id="insertExamPaperResult">
+        INSERT INTO tb_exam_paper(stu_no, topic_id,point_id,result) VALUES (#{stu_no},#{topic_id},#{point_id},#{result})
+    </insert>
+
+    <!--插入学号题号测试点号-->
+    <insert id="insertExamPaperPoint">
+        INSERT INTO tb_exam_paper(stu_no, topic_id,point_id) VALUES (#{stu_no},#{topic_id},#{point_id})
+    </insert>
+
+    <!--删除-->
+    <delete id="deletePaperByTopicIdStuNo">
+        DELETE FROM tb_exam_paper WHERE topic_id=#{topic_id} AND stu_no=#{stu_no}
+    </delete>
+
+</mapper>

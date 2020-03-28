@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>AzzanTest</title>
+    <script src="js/jquery.min.js"></script>
+    <script src="echarts.min.js"></script>
+</head>
+<body>
+<div id="echartsPie" style="width: 600px;height:400px;"></div>
+<script type="text/javascript">
+    var echartsPie;
+    var json = [
+        {value: 30, name: 'Submit'},
+        {value: 24, name: 'Accepted'}
+    ];
+    var option = {
+        title: {
+            text: '女神年龄分布',
+            subtext: '独家报道',
+            x: 'center'
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} 岁"
+        },
+        legend: {
+            orient: 'vertical',
+            x: 'left',
+            data: ['Submit', 'Accepted']
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                mark: {show: true},
+                dataView: {show: true, readOnly: false},
+                magicType: {
+                    show: true,
+                    type: ['pie', 'funnel'],
+                    option: {
+                        funnel: {
+                            x: '25%',
+                            width: '50%',
+                            funnelAlign: 'left',
+                            max: 1548
+                        }
+                    }
+                },
+                restore: {show: true},
+                saveAsImage: {show: true}
+            }
+        },
+        calculable: true,
+        series: [
+            {
+                name: '女神',
+                type: 'pie',
+                radius: '55%',//饼图的半径大小
+                center: ['50%', '60%'],//饼图的位置
+                data: json
+            }
+        ]
+    };
+
+    echartsPie = echarts.init(document.getElementById('echartsPie'));
+    $(function () {
+        echartsPie.setOption(option);
+
+    });
+</script>
+</body>
+</html>

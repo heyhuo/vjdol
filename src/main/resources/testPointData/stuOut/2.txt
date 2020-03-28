@@ -1,0 +1,9 @@
+ProblemResultItem [useTime=4, useMemory=29, result=aaaaaaaaaaaa
+a          a
+a          a
+a          a
+a          a
+aaaaaaaaaaaa
+
+
+, message=null, isNormal=true, inputFilePath=/Users/huoshan/IdeaProjects/vjdol/src/main/resources/testPointData/in/1/1_2.in]

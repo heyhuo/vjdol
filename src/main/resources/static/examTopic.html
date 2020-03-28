@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>查看题目</title>
+    <!--字体-->
+    <link rel="stylesheet" media="screen" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+    <!--样式-->
+    <link rel="stylesheet" href="css/createTopic.css">
+    <!--jQuery-->
+    <script src="js/jquery.min.js"></script>
+    <!--bootstrap-->
+    <script src="js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="bootstrap3/css/bootstrap.min.css">
+    <!-- 富文本配置文件 -->
+    <script type="text/javascript" src="ueditor/ueditor.config.js"></script>
+    <!-- 编辑器源码文件 -->
+    <script type="text/javascript" src="ueditor/ueditor.all.js"></script>
+    <!--代码高亮样式-->
+    <link href="code/highlight/styles/valcano.css" rel="stylesheet">
+    <!--代码高亮-->
+    <script src="code/highlight/highlight.pack.js"></script>
+    <!--echarts-->
+    <script src="echarts.min.js"></script>
+    <!--<script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>-->
+    <script>hljs.initHighlightingOnLoad();</script>
+
+</head>
+<style type="text/css">
+
+    .submission {
+        /*position: fixed;*/
+        float: right;
+        margin: -1300px 40px 180px 100px;
+        /*margin-left: 800px;*/
+        width: 310px;
+        background-color: #ffffff;
+        /*height: 100px;*/
+        border-radius: 10px;
+        -moz-box-shadow: 2px 2px 5px #B0B0B0;
+        -webkit-box-shadow: 2px 2px 5px #B0B0B0;
+        box-shadow: 2px 2px 5px #B0B0B0;
+        padding: 20px 10px 5px 10px;
+    }
+
+    .info {
+        float: right;
+        margin-left: -90px;
+
+    }
+
+    i {
+        margin-left: 16px;
+    }
+
+    .panel-title {
+        color: #006a94;
+    }
+
+</style>
+
+<body>
+<!-- Fixed navbar -->
+<div class="navbar navbar-inverse" style="background:#3d3d3d;z-index: 100">
+    <div class="container">
+        <div class="navbar-header">
+            <!-- Button for smallest screens -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span
+                    class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+            <a class="navbar-brand" href="index.html">
+                <img src="assets/images/logo3.png" style="margin: -5px auto;width:230px;height: 78px;"
+                     alt="Techro HTML5 template"></a>
+        </div>
+        <div style="margin: 30px 100px 20px -100px" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav pull-right mainNav">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="examList.html">考试</a></li>
+                <li class="dropdown">
+                    <a href="about.html" class="dropdown-toggle" data-toggle="dropdown">题库</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="topicList.html">研究生入学考试</a></li>
+                        <li><a href="topicList.html">机试甲级题目</a></li>
+                        <li><a href="topicList.html">机试乙级题目</a></li>
+                    </ul>
+
+                </li>
+                <li><a href="login_register.html">登录</a></li>
+            </ul>
+        </div>
+        <!--/.nav-collapse -->
+    </div>
+</div>
+<!-- /.navbar -->
+
+
+<!--&lt;!&ndash;完成编辑按钮&ndash;&gt;-->
+<!--<div class="complete">-->
+<!--<button style="margin-top: 20px" onclick="returnList()" type="button" class="btn" id="back">-->
+<!--返回列表-->
+<!--</button>-->
+
+<!--</div>-->
+
+<div style="margin: 50px auto 80px 70px;width: 65%" class="editArea">
+    <!--标题区域-->
+    <div class="panel panel-default" id="topicTitle">
+
+        <div class="panel-heading">
+            <h2 class="panel-title">题目标题</h2>
+        </div>
+        <div class="panel-body" id="panel-title" value="">
+            在这里预览你所编辑的题目标题
+        </div>
+    </div>
+
+    <!--内容区域-->
+    <div class="panel panel-default " id="topicContent">
+
+        <div class="panel-heading">
+            <h2 class="panel-title">题目内容</h2>
+        </div>
+        <div class="panel-body" id="panel-content">
+            在这里预览输入的内容
+        </div>
+    </div>
+
+    <!--输入格式区域-->
+    <div class="panel panel-default " id="topicInFormat">
+
+        <div class="panel-heading">
+            <h2 class="panel-title">输入格式</h2>
+        </div>
+        <div class="panel-body" id="panel-informat">
+            在这里预览编辑的输入格式
+        </div>
+    </div>
+
+    <!--输出格式区域-->
+    <div class="panel panel-default " id="topicOutFormat">
+
+        <div class="panel-heading">
+            <h2 class="panel-title">输出格式</h2>
+        </div>
+        <div class="panel-body" id="panel-outformat">
+            在这里预览输出格式内容
+        </div>
+
+    </div>
+
+    <!--输入样例区域-->
+    <div class="panel panel-default " id="topicInSample">
+
+        <div class="panel-heading">
+            <h2 class="panel-title">输入样例</h2>
+        </div>
+        <div class="panel-body" id="panel-inSample">
+            在这里预览编辑的输入样例
+        </div>
+    </div>
+
+    <!--输出格式区域-->
+    <div class="panel panel-default " id="topicOutSample">
+
+        <div class="panel-heading">
+            <h2 class="panel-title">输出样例</h2>
+        </div>
+        <div class="panel-body" id="panel-outSample">
+            在这里预览输出样例内容
+        </div>
+    </div>
+
+    <!--提交代码区域-->
+    <div class="panel panel-success " id="topicSubmitCode">
+
+        <div class="panel-heading">
+            <h4 class="panel-title1">请提交你的代码</h4>
+        </div>
+        <div class="panel-body" id="panel-submitCode">
+            <div id="pendingBar"></div>
+            <pre><code id="code-pre" class="lang-javascript">
+
+            </code></pre>
+        </div>
+        <ul class="list-group" id="outSampleEditor">
+
+            <li style="border-style: none" class="list-group-item" id="button">
+                <!--提交代码编辑按钮-->
+                <div id="submitCodeEditButton" class="editButton" style="margin: 0 auto auto 45%">
+                    <button id="editubmitCodeButton" style="margin: -10px auto 0px 65%"
+                            type="button"
+                            class="btn btn-warning "
+                            data-toggle="button">
+                        提交代码
+                    </button>
+                </div>
+                <!--提交代码完成按钮-->
+                <div id="submitCodeInsertButton" class="insertButton"
+                     style="margin: 0 auto auto 45%">
+                    <button id="insertubmitCodeButton" style="margin: -10px auto 0px 65%"
+                            type="button"
+                            class="btn btn-success "
+                            data-toggle="button">
+                        确认提交
+                    </button>
+                </div>
+            </li>
+
+            <li class="list-group-item" id="submitCode">
+
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!--右边栏-->
+<div class="submission">
+    <ul class="list-group">
+        <li class="list-group-item"
+            style="background-color: #157dc5;color: white;font-style: italic;font-size: 18px;text-align: center;letter-spacing: 3px">
+            Information
+        </li>
+        <li class="list-group-item"><i>Id</i>
+            <div class="info" id="id"></div>
+        </li>
+        <li class="list-group-item"><i>Time Limit</i>
+            <div class="info" id="time"></div>
+        </li>
+        <li class="list-group-item"><i>Memory Limit</i>
+            <div class="info" id="memo"></div>
+        </li>
+        <li class="list-group-item"><i>Author</i>
+            <div class="info" id="auth"></div>
+        </li>
+    </ul>
+
+    <!--echarts容器-->
+    <div id="echartsPie" style="width: 300px;height:280px;"></div>
+
+</div>
+
+<!--页脚-->
+<footer style="padding-top: 20px;padding-bottom: 20px;margin-top: 40px;background-color: #181818" id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="footerbottom">
+                <h4 style="text-align: center;color:#d9d9d9">Copyright 2018 @ <a style="color: #ff9022"
+                                                                                 href="http://valcanoshan.cn">Valcanoshan</a>
+                </h4>
+                <p style="color: #f2f2f2;text-align: center">Power By huoshan</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+</body>
+<script>
+
+    var echartsPie = echarts.init(document.getElementById('echartsPie'));
+
+    var id = 0;
+    var tId = 0;
+    window.onload = function () {
+        $(".insertButton").hide();
+        id = window.location.search.substr(1, id.length);
+        tId = id;
+        queryExamTopicByid(id);
+
+    }
+
+    //返回列表
+    function returnList() {
+        window.location.href = "examList.html";
+        $(".insertButton").hide();
+    }
+    //查询学生代码
+    function queryCode(topicId,stuNo) {
+        
+    }
+    //查询题目内容
+    function queryExamTopicByid(id) {
+        var d = {};
+        d.id = id;
+        $.ajax({
+            url: "/editTopic",
+            data: JSON.stringify(d),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            success: function (topic) {
+                //标题
+                var title = $("#panel-title");
+                title.html(topic.topic_title);
+                //内容
+                var content = $("#panel-content");
+                content.html(topic.topic_content);
+                //输入格式
+                var in_format = $("#panel-informat");
+                in_format.html(topic.input_format);
+                //输出格式
+                var out_format = $("#panel-outformat");
+                out_format.html(topic.output_format);
+                //输入样例
+                var in_sample = $("#panel-inSample");
+                in_sample.html(topic.input_sample);
+                //输出样例
+                var out_sample = $("#panel-outSample");
+                out_sample.html(topic.output_sample);
+                //时间
+                var time = $("#time");
+                time.html(topic.time_limit + " (ms)");
+                //内存
+                var memo = $("#memo");
+                memo.html(topic.memory_limit + " (KB)");
+                //作者
+                var auth = $("#auth");
+                auth.html("admin");
+                //编号
+                var idd = $("#id");
+                idd.html(topic.topic_id);
+                //提交数
+                var submit = topic.total_submit;
+                //通过数
+                var acc = topic.accepted;
+
+                var option = {
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b} : {c}"
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        x: 'left',
+                        data: ['Submit', 'Accepted']
+                    },
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            mark: {show: true},
+                            // dataView: {show: true, readOnly: false},
+                            magicType: {
+                                show: true,
+                                type: ['pie', 'funnel'],
+                                option: {
+                                    funnel: {
+                                        x: '25%',
+                                        width: '50%',
+                                        funnelAlign: 'left',
+                                        max: 1548
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    calculable: true,
+                    series: [
+                        {
+                            name: 'SubmitRadio',
+                            type: 'pie',
+                            radius: '65%',//饼图的半径大小
+                            center: ['50%', '55%'],//饼图的位置
+                            labelLine: {
+                                normal: {
+                                    length: 0,
+                                    position: 'inner'
+                                }
+                            },
+                            data: [{value: submit, name: 'Submit'}, {value: acc, name: 'Accepted'}]
+                        }
+                    ],
+                    color: ['#278AC5', '#C54F8D']
+                };
+                echartsPie.setOption(option);
+
+            }, error: function (topic) {
+                alert("emmmmmm....数据库还没准备好");
+            }
+        });
+
+    }
+
+    //转义过滤
+    function htmldecode(str) {
+        str = str.replace(/&amp;/gi, '&');
+        str = str.replace(/&nbsp;/gi, ' ');
+        str = str.replace(/&quot;/gi, '"');
+        str = str.replace(/&#39;/g, "'");
+        str = str.replace(/&lt;/gi, '<');
+        str = str.replace(/&gt;/gi, '>');
+        str = str.replace(/<br[^>]*>(?:(rn)|r|n)?/gi, 'n');
+        str = str.replace(/^((\s|&nbsp;)*\r?\n)+/g, '');//清除开头换行
+        str.replace(/((\s|&nbsp;)*\r?\n)+$/g, '');//清除结尾换行
+        return str;
+    }
+
+    //换行转</br>
+    function return2Br(str) {
+        str = str.replace(/\r?\n/g, "<br>");
+        str = str.replace(/\s/g, "&nbsp;");
+        return str;
+    }
+
+    //编辑按钮函数
+    function createEditor(id, area, insert) {
+        //id:     panel -> id
+        //area:   li -> id
+        //insert: insert -> id
+
+        // var editor = "<script id='container' name='content' type='text/plain'><\/script>";
+        var textArea = "<textarea id='codeArea' class='form-control' rows='10'></textarea>";
+        var a = $("#" + id).html();
+        var b = $("#" + area);
+        b.append(textArea);
+        // b.append(editor);
+        <!-- 实例化编辑器 -->
+
+        // var editor = UE.getEditor('container');
+        $(".editButton").hide();
+        $("#" + insert).show();
+    }
+
+    //提交代码
+    function submitCode(topicId, stuNo, code) {
+        var d = {};
+        d.topicId = topicId;
+        d.stuNo = stuNo;
+        d.code = code;
+        $.ajax({
+            url: "/submitCode",
+            data: JSON.stringify(d),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            success: function (judge) {
+                // readFile(topicId, stuNo);
+                // window.location.href = judge.message;
+                judgeResult(topicId, stuNo);
+            }, error: function (judge) {
+                alert("emmmmmm....提交代码还没完成");
+            }
+        });
+    }
+
+    // //将运行结果写入数据库
+    // function readFile(topicId, stuNo) {
+    //     var d = {};
+    //     d.topicId = topicId;
+    //     d.stuNo = stuNo;
+    //     $.ajax({
+    //         url: "/readFile",
+    //         data: JSON.stringify(d),
+    //         type: "POST",
+    //         contentType: "application/json;charset=utf-8",
+    //         success: function (judge) {
+    //             judgeResult(topicId, stuNo);
+    //
+    //         }, error: function (judge) {
+    //             alert("emm...结果没读到..");
+    //         }
+    //     });
+    // }
+
+    //将运行结果与答案进行匹配
+    function judgeResult(topicId, stuNo) {
+        var d = {};
+        d.topicId = topicId;
+        d.stuNo = stuNo;
+        $.ajax({
+            url: "/judgeResult",
+            data: JSON.stringify(d),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            success: function (judge) {
+                alert("结果评判已完成->>" + judge.message);
+                window.location.href = "judgeResult.html?" + id;
+            }, error: function (judge) {
+                alert("emm...结果评判还没好");
+            }
+        });
+    }
+
+    var value = 0;
+    var time = 20;
+
+    //百分数增加，0-30时为红色，30-60为黄色，60-90为蓝色，>90为绿色
+    function increment() {
+        value += 3;
+        $("#prog").css("width", value + "%");
+        if (value >= 0 && value <= 30) {
+            $("#prog").addClass("progress-bar-warning");
+        }
+        else if (value >= 30 && value <= 60) {
+            $("#prog").removeClass("progress-bar-warning");
+            $("#prog").addClass("progress-bar-info");
+        }
+        else if (value >= 60 && value <= 90) {
+            $("#prog").removeClass("progress-bar-info");
+            $("#prog").addClass("progress-bar-active");
+        }
+        else if (value >= 90 && value < 100) {
+            $("#prog").removeClass("progress-bar-info");
+            $("#prog").addClass("progress-bar-success");
+        }
+        else {
+            setTimeout(reset, 4000);
+            return;
+        }
+        st = setTimeout(increment, time);
+    }
+
+    //进度条
+    function processBar(content) {
+        submitCode(tId, "1", content);
+        var pendingBar = "<div class=\"progress progress-striped active\">\n" +
+            "            <div id=\"prog\" class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"50\" aria-valuemax=\"100\"\n" +
+            "                 aria-valuemin=\"0\" style=\"width:50%;\"></div>\n" +
+            "            <span class=\"sr-only\">50%完成</span>\n" +
+            "        </div>";
+        $("#pendingBar").html(pendingBar);
+        increment();
+    }
+
+
+    //完成编辑插入
+    function insert(id, area, panel, url) {
+        var msg = "确认提交代码？？？\n提交代码后请耐心等待评判结果(/≧▽≦)/";
+
+        if (confirm(msg) == true) {
+            // var editor = UE.getEditor('container');
+            var content = $("#codeArea").val();
+            var htmlCode = return2Br(content);
+            // var content = editor.getPlainTxt();
+            // var htmlContent = editor.getContent();
+            var co = hljs.highlightAuto(content).value;
+            var panelContent = $("#" + panel);
+            // alert(content);
+
+            $("#code-pre").html(co);
+            // panelContent.html(co);
+            // UE.getEditor('container').destroy();
+            // $("textarea").remove();
+            $("#codeArea").remove();
+            $(".editButton").hide();
+            $("#" + id).hide();
+            $(".insertButton").hide();
+            // alert(panelContent.html());
+            //ajax提交代码函数
+            processBar(content);
+        } else {
+            return false;
+        }
+
+    }
+
+    //提交代码编辑按钮
+    $("#editubmitCodeButton").click(function () {
+        createEditor('topicSubmitCode', 'submitCode', 'submitCodeInsertButton');
+    });
+    //提交代码完成按钮
+    $("#insertubmitCodeButton").click(function () {
+        insert('submitCodeInsertButton', 'submitCode', 'panel-submitCode', '/updateInputSample');
+    });
+
+</script>
+</html>

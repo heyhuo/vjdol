@@ -1,0 +1,75 @@
+.panel {
+    line-height: 25px;
+}
+
+#topicTitle {
+    font-style: italic;
+    font-size: 16px;
+    text-align: center;
+}
+
+/*#topicContent {*/
+/*float: right;*/
+/*}*/
+
+.editArea {
+    padding: 20px 30px 30px 30px;
+    margin: 20px auto;
+    width: 800px;
+    /*height: 700px;*/
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    -moz-box-shadow: 2px 2px 5px #B0B0B0;
+    -webkit-box-shadow: 2px 2px 5px #B0B0B0;
+    box-shadow: 2px 2px 5px #B0B0B0;
+}
+
+#complete {
+    width: 80px;
+    background-color: #4cae4c;
+    color: #FFFFFF;
+    height: 40px;
+    position: absolute;
+    margin: 20px auto auto 140px;
+}
+
+#back {
+    width: 80px;
+    background-color: #d36c23;
+    color: #FFFFFF;
+    height: 40px;
+    position: absolute;
+    margin: 70px auto auto 140px;
+}
+
+#judgeBack {
+    width: 80px;
+    background-color: #3e9427;
+    color: #FFFFFF;
+    height: 40px;
+    margin: 10px auto auto 43%;
+}
+
+#judgeResultListBody {
+    font-style: italic;
+    letter-spacing: 5px;
+}
+
+#timeButton, #memoryButton, #scoreButton {
+    position: absolute;
+    width: 60px;
+}
+
+#timeArea, #memoryArea, #scoreArea {
+    width: 700px;
+    margin-bottom: 20px;
+}
+
+#timeInput, #memoryInput, #scoreInput {
+    width: 80%;
+}
+
+/*.table th, .table td {*/
+    /*text-align: center;*/
+    /*vertical-align: middle !important;*/
+/*}*/

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.valcano.vjdol.entity.TopicAnswer">
+
+    <!--插入题目答案-->
+    <insert id="insertTopicAnswer">
+        INSERT INTO tb_topic_answer(stu_no,topic_id,code) VALUES (#{stu_no},#{topic_id},#{code})
+    </insert>
+
+    <!--通过学号题号查询答案-->
+    <select id="queryAnswerByStuNoTopicId" resultType="TopicAnswer">
+        SELECT * FROM tb_topic_answer WHERE stu_no=#{stu_no} AND topic_id=#{topic_id}
+    </select>
+
+    <!--更新答案代码-->
+    <update id="updateAnswerCode">
+        UPDATE tb_topic_answer SET code=#{code},submit_num=#{submit_num} WHERE stu_no=#{stu_no} AND topic_id=#{topic_id}
+    </update>
+
+    <!--查询所有-->
+    <select id="queryAllAnswer" resultType="TopicAnswer">
+        SELECT paper_id,stu_no,topic_id,code,topic_id,submit_num,topic_socre FROM tb_topic_answer
+    </select>
+
+    <!--更新总分-->
+    <update id="updateTopicScore">
+        UPDATE tb_topic_answer SET topic_socre=#{topic_socre} WHERE stu_no=#{stu_no} AND topic_id=#{topic_id}
+    </update>
+
+    <!--删除-->
+    <delete id="deleteAnswerByTopicIdStuNO">
+      DELETE FROM tb_topic_answer WHERE stu_no=#{stu_no} AND topic_id=#{topic_id}
+    </delete>
+
+</mapper>
+
+
+
+

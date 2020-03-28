@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.valcano.vjdol.entity.Topic">
+    <insert id="insertTopic">
+        INSERT INTO tb_topic_info(topic_id) VALUES(#{topic_id})
+    </insert>
+    <!--更新标题-->
+    <update id="updateTopicTitle">
+        UPDATE tb_topic_info SET topic_title=#{topic_title} WHERE topic_id=#{topic_id}
+    </update>
+
+    <!--更新内容-->
+    <update id="updateTopicContent">
+        UPDATE tb_topic_info SET topic_content=#{topic_content} WHERE topic_id=#{topic_id}
+    </update>
+
+    <!--更新输入格式-->
+    <update id="updateTopicInputFormat">
+        UPDATE tb_topic_info SET input_format=#{input_format} WHERE topic_id=#{topic_id}
+    </update>
+
+    <!--更新输出格式-->
+    <update id="updateTopicOutputFormat">
+        UPDATE tb_topic_info SET output_format=#{output_format} WHERE topic_id=#{topic_id}
+    </update>
+
+    <!--更新输入样例-->
+    <update id="updateTopicInputSample">
+        UPDATE tb_topic_info SET input_sample=#{input_sample} WHERE topic_id=#{topic_id}
+    </update>
+
+    <!--更新输出样例-->
+    <update id="updateTopicOutputSample">
+        UPDATE tb_topic_info SET output_sample=#{output_sample} WHERE topic_id=#{topic_id}
+    </update>
+
+    <!--更新运行时限-->
+    <update id="updateTopicTimeLimitById">
+        UPDATE tb_topic_info SET time_limit=#{time_limit} WHERE topic_id=#{topic_id}
+    </update>
+
+    <!--更新内存限制-->
+    <update id="updateTopicMemoryLimitById">
+        UPDATE tb_topic_info SET memory_limit=#{memory_limit} WHERE topic_id=#{topic_id}
+    </update>
+
+    <!--更新题目分数-->
+    <update id="updateTopicScoreById">
+        UPDATE tb_topic_info SET topic_score=#{topic_score} WHERE topic_id=#{topic_id}
+    </update>
+
+    <!--更新题目提交数-->
+    <update id="updateTotalSubmit">
+        UPDATE tb_topic_info SET total_submit=#{total_submit} WHERE topic_id=#{topic_id}
+    </update>
+
+    <!--更新题目通过数-->
+    <update id="updateAccepted">
+        UPDATE tb_topic_info SET accepted=#{accepted} WHERE topic_id=#{topic_id}
+    </update>
+
+    <!--查询所有题目-->
+    <select id="queryAllTopic" resultType="Topic">
+        SELECT topic_id,topic_title,total_submit,accepted,time_limit,memory_limit,publish_state,topic_score,point_num FROM tb_topic_info
+    </select>
+
+    <!--查询已发布的题目-->
+    <select id="queryPublishTopic" resultType="Topic">
+        SELECT topic_id,topic_title,total_submit,accepted,time_limit,memory_limit,publish_state,topic_score,point_num FROM tb_topic_info WHERE publish_state='1'
+    </select>
+
+    <!--通过id删除题目-->
+    <delete id="deleteTopicById">
+        DELETE FROM tb_topic_info WHERE topic_id=#{topic_id}
+    </delete>
+
+    <!--通过id查询题目-->
+    <select id="quryTopicById" resultType="Topic">
+        SELECT topic_id,topic_title,topic_content,input_format,output_format,input_sample,output_sample,time_limit,memory_limit,topic_score,point_num,total_submit,accepted FROM tb_topic_info WHERE topic_id=#{topic_id}
+    </select>
+
+    <!--更新题目状态-->
+    <update id="editFalseState">
+        UPDATE tb_topic_info SET publish_state='0' WHERE topic_id=#{topic_id}
+    </update>
+
+    <!--更新题目状态-->
+    <update id="editTrueState">
+        UPDATE tb_topic_info SET publish_state='1' WHERE topic_id=#{topic_id}
+    </update>
+
+    <!--更新测试点数-->
+    <update id="updateTopicPointNum">
+        UPDATE tb_topic_info SET point_num=#{point_num} WHERE topic_id=#{topic_id}
+    </update>
+
+
+</mapper>

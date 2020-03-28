@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.valcano.vjdol.entity.Admin">
+    <insert id="insertAdmin">
+        INSERT INTO tb_admin(admin_name,admin_pwd) VALUES(#{adminName},#{adminPwd})
+    </insert>
+    <insert id="insertAdminCatchId">
+        INSERT INTO tb_admin(admin_name,admin_pwd) VALUES(#{adminName},#{adminPwd})
+        <selectKey resultType="int" keyProperty="adminId">
+            SELECT @@identity
+        </selectKey>
+    </insert>
+    <delete id="deleteById">
+        DELETE FROM tb_admin WHERE admin_id=#{adminId}
+    </delete>
+
+
+    <update id="updateAdmin">
+        UPDATE tb_admin SET admin_name=#{adminName},admin_pwd=#{adminPwd} WHERE admin_Id=#{adminId}
+    </update>
+
+    <select id="selectAllAdmin" resultType="Admin">
+        SELECT * FROM tb_admin
+    </select>
+
+    <select id="selectAdminById" resultType="Admin">
+        SELECT * FROM tb_admin WHERE admin_id=#{id}
+    </select>
+
+    <select id="selectAdminByName" resultType="Admin">
+        SELECT * FROM tb_admin WHERE admin_name=#{name}
+    </select>
+
+</mapper>

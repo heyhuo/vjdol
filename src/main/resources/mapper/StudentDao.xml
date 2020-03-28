@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.valcano.vjdol.entity.Student">
+
+    <!--插入学生-->
+    <insert id="insertStudent">
+        INSERT INTO tb_student_info(stu_no, stu_pwd, stu_name, stu_id) VALUES (#{stu_no},#{stu_pwd},#{stu_name},#{stu_id})
+    </insert>
+    <!--查询学生-->
+    <select id="queryStudentByid" resultType="Student">
+        SELECT stu_no,stu_pwd,stu_name,stu_id,stu_pic FROM tb_student_info WHERE stu_no=#{stu_no}
+    </select>
+</mapper>

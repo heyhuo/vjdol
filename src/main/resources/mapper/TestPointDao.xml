@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.valcano.vjdol.entity.TestPoint">
+
+    <insert id="insertTestPoint">
+        INSERT INTO tb_test_point(topic_id,point_id) VALUES(#{topic_id},#{point_id})
+    </insert>
+
+    <select id="queryPointById" resultType="TestPoint">
+        SELECT * FROM tb_test_point WHERE point_id=#{point_id} AND topic_id=#{topic_id}
+    </select>
+
+    <delete id="deleteTestPointById">
+        DELETE FROM tb_test_point WHERE point_id=#{point_id} AND topic_id=#{topic_id}
+    </delete>
+
+    <delete id="deleteTestPointAll">
+        DELETE FROM tb_test_point WHERE topic_id=#{topic_id}
+    </delete>
+
+    <select id="queryPoint" resultType="TestPoint">
+        SELECT topic_id,point_id,input_data,out_data FROM tb_test_point WHERE topic_id=#{topic_id}
+    </select>
+
+    <select id="queryPointInputPath" resultType="String">
+        SELECT input_path FROM tb_test_point WHERE topic_id=#{topic_id}
+    </select>
+
+    <update id="updateInputDataById">
+        UPDATE tb_test_point SET input_data=#{input_data},input_path=#{input_path} WHERE topic_id=#{topic_id} AND point_id=#{point_id}
+    </update>
+
+    <update id="updateOutDataById">
+        UPDATE tb_test_point SET out_data=#{out_data} WHERE topic_id=#{topic_id} AND point_id=#{point_id}
+    </update>
+
+    <update id="updatePointScoreById">
+        UPDATE tb_test_point SET point_socre=#{point_socre} WHERE topic_id=#{topic_id} AND point_id=#{point_id}
+    </update>
+
+
+</mapper>

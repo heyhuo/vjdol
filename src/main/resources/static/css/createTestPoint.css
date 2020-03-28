@@ -1,0 +1,119 @@
+
+.editArea {
+    padding: 20px 30px 30px 30px;
+    margin: 20px auto;
+    width: 800px;
+    /*height: 700px;*/
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    -moz-box-shadow: 0px -1px 13px #D9D9D9, 2px 2px 5px #333333;
+    -webkit-box-shadow: 0px -1px 13px #D9D9D9, 2px 2px 5px #333333;
+    box-shadow: 0px -1px 13px #D9D9D9, 2px 2px 5px #333333;
+}
+
+.input-group {
+    margin-left: 40px;
+    width: 600px;
+}
+
+.input-group-addon {
+    font-size: 16px;
+    color: #05a339;
+}
+
+#inPoint {
+    height: 40px;
+    background-color: #05a339;
+    position: absolute;
+}
+
+.panel {
+
+    margin-left: 40px;
+    width: 655px;
+    margin-top: 20px;
+
+}
+
+.panel-body {
+    padding: 20px 20px 20px 20px;
+    /*border-width: 1px;*/
+    /*border-style: solid;*/
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-right-style: solid;
+    border-right-width: 1px;
+    border-color: #d6d6d6;
+}
+
+.list-group-item {
+    border-style: none;
+
+}
+
+.edit {
+    margin-left: 80%;
+    background-color: #3e9bd7;
+    color: #FFFFFF;
+}
+
+.insert {
+    /*position: absolute;*/
+    margin-left: 80%;
+    background-color: #05a339;
+}
+
+.panel-heading {
+    font-size: 16px;
+}
+
+#tip1, #tip2 {
+    color: #0055aa;
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+    font-style: italic;
+}
+
+#tip2 {
+    color: #d35e2e;
+}
+
+.delete {
+    background-color: #cb7b2d;
+    color: #FFFFFF;
+    /*margin-top: 40px;*/
+    margin-top: -30px;
+    position: absolute;
+    margin-left: 86%;
+}
+
+.list-group {
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-right-style: solid;
+    border-right-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-color: #d6d6d6;
+}
+
+#complete {
+    width: 80px;
+    background-color: #4cae4c;
+    color: #FFFFFF;
+    height: 40px;
+    position: absolute;
+    margin: 40px auto auto 140px;
+}
+
+#back {
+    width: 80px;
+    background-color: #d36c23;
+    color: #FFFFFF;
+    height: 40px;
+    position: absolute;
+    margin: 90px auto auto 140px;
+}
+

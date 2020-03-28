@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>创建题目</title>
+    <link rel="stylesheet" media="screen" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+    <link rel="stylesheet" href="css/createTopic.css">
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- 富文本配置文件 -->
+    <script type="text/javascript" src="ueditor/ueditor.config.js"></script>
+    <!-- 编辑器源码文件 -->
+    <script type="text/javascript" src="ueditor/ueditor.all.js"></script>
+
+
+</head>
+<body>
+<!-- Fixed navbar -->
+<div class="navbar navbar-inverse" style="background:#3d3d3d;z-index: 100">
+    <div class="container">
+        <div class="navbar-header">
+            <!-- Button for smallest screens -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span
+                    class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+            <a class="navbar-brand" href="index.html">
+                <img src="assets/images/logo3.png" style="margin: -5px auto;width:230px;height: 78px;"
+                     alt="Techro HTML5 template"></a>
+        </div>
+        <div style="margin: 30px 100px 20px -100px" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav pull-right mainNav">
+                <li class=""><a href="index.html">首页</a></li>
+                <li class="dropdown">
+                    <a href="examList.html" class="dropdown-toggle" data-toggle="dropdown">考试 <b class="caret"></b></a>
+                </li>
+                <li class="dropdown">
+                    <a href="about.html" class="dropdown-toggle" data-toggle="dropdown">题库 <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="topicList.html">研究生入学考试</a></li>
+                        <li><a href="topicList.html">机试甲级题目</a></li>
+                        <li><a href="topicList.html">机试乙级题目</a></li>
+                    </ul>
+
+                </li>
+                <li><a href="login_register.html">登录</a></li>
+            </ul>
+        </div>
+        <!--/.nav-collapse -->
+    </div>
+</div>
+<!-- /.navbar -->
+
+
+<!--完成编辑按钮-->
+<div class="complete">
+    <button onclick="returnList()" type="button" class="btn" id="back">
+        返回列表
+    </button>
+    <button onclick="returnList()" type="button" class="btn" id="complete">
+        完成编辑
+    </button>
+
+</div>
+
+<div class="editArea">
+    <!--标题区域-->
+    <div class="panel panel-warning " id="topicTitle">
+
+        <div class="panel-heading">
+            <h2 class="panel-title">题目标题</h2>
+        </div>
+        <div class="panel-body" id="panel-title" value="">
+            在这里预览你所编辑的题目标题
+        </div>
+        <ul class="list-group" id="titleditor">
+            <li style="border-style: none" class="list-group-item" id="button">
+                <div id="titleEditButton" class="editButton" style="margin:-10px auto auto 45%">
+                    <!--标题编辑按钮-->
+                    <button id="editTitleButton" style="margin: -10px auto 0px 65%"
+                            type="button"
+                            class="btn btn-warning "
+                            data-toggle="button">
+                        编辑
+                    </button>
+                </div>
+                <!--标题完成按钮-->
+                <div id="titleInsertButton" class="insertButton" style="margin:-10px auto auto 45%">
+                    <button id="insertTitleButton"
+                            style="margin: -10px auto 0px 65%"
+                            type="button"
+                            class="btn btn-success "
+                            data-toggle="button">
+                        完成
+                    </button>
+                </div>
+            </li>
+            <!--内容-->
+            <li class="list-group-item" id="title">
+
+            </li>
+        </ul>
+    </div>
+
+    <!--内容区域-->
+    <div class="panel panel-info " id="topicContent">
+
+        <div class="panel-heading">
+            <h2 class="panel-title">题目内容</h2>
+        </div>
+        <div class="panel-body" id="panel-content">
+            在这里预览输入的内容
+        </div>
+        <ul class="list-group" id="titleEditor">
+            <li style="border-style: none" class="list-group-item" id="button">
+                <!--内容编辑按钮-->
+                <div id="contentEditButton" class="editButton" style="margin:-10px auto auto 45%">
+                    <button id="editContentButton"
+                            style="margin: -10px auto 0px 65%"
+                            type="button"
+                            class="btn btn-warning "
+                            data-toggle="button">
+                        编辑
+                    </button>
+                </div>
+                <!--内容完成按钮-->
+                <div id="contentInsertButton" class="insertButton" style="margin: -10px auto auto 45%">
+                    <button id="insertContentButton" style="margin: -10px auto 0px 65%"
+                            type="button"
+                            class="btn btn-success "
+                            data-toggle="button">
+                        完成
+                    </button>
+                </div>
+            </li>
+            <li class="list-group-item" id="content">
+
+            </li>
+        </ul>
+    </div>
+
+    <!--输入格式区域-->
+    <div class="panel panel-warning " id="topicInFormat">
+
+        <div class="panel-heading">
+            <h2 class="panel-title">输入格式</h2>
+        </div>
+        <div class="panel-body" id="panel-informat">
+            在这里预览编辑的输入格式
+        </div>
+        <ul class="list-group" id="editor">
+            <li style="border-style: none" class="list-group-item" id="button">
+                <div id="inFormatEditButton" class="editButton" style="margin: 0 auto auto 45%">
+                    <button id="editInFormatButton" style="margin: -10px auto 0px 65%"
+                            type="button"
+                            class="btn btn-warning "
+                            data-toggle="button">
+                        编辑
+                    </button>
+                </div>
+                <div id="inFormatInsertButton" class="insertButton" style="margin: 0 auto auto 45%">
+                    <button id="insertInFormatButton" style="margin: -10px auto 0px 65%"
+                            type="button"
+                            class="btn btn-success "
+                            data-toggle="button">
+                        完成
+                    </button>
+                </div>
+            </li>
+            <li class="list-group-item" id="inFormat">
+
+            </li>
+        </ul>
+    </div>
+
+    <!--输出格式区域-->
+    <div class="panel panel-info " id="topicOutFormat">
+
+        <div class="panel-heading">
+            <h2 class="panel-title">输出格式</h2>
+        </div>
+        <div class="panel-body" id="panel-outformat">
+            在这里预览输出格式内容
+        </div>
+        <ul class="list-group" id="outFormatEditor">
+            <li style="border-style: none" class="list-group-item" id="button">
+                <!--输出格式编辑按钮-->
+                <div id="outFormatEditButton" class="editButton" style="margin: 0 auto auto 45%">
+                    <button id="editoutFormatButton" style="margin: -10px auto 0px 65%"
+                            type="button"
+                            class="btn btn-warning "
+                            data-toggle="button">
+                        编辑
+                    </button>
+                </div>
+                <!--输出格式完成按钮-->
+                <div id="outFormatInsertButton" class="insertButton"
+                     style="margin: 0 auto auto 45%">
+                    <button id="insertOutFormatButton" style="margin: -10px auto 0px 65%"
+                            type="button"
+                            class="btn btn-success "
+                            data-toggle="button">
+                        完成
+                    </button>
+                </div>
+            </li>
+
+            <li class="list-group-item" id="outFormat">
+
+            </li>
+        </ul>
+    </div>
+
+    <!--输入样例区域-->
+    <div class="panel panel-warning " id="topicInSample">
+
+        <div class="panel-heading">
+            <h2 class="panel-title">输入样例</h2>
+        </div>
+        <div class="panel-body" id="panel-inSample">
+            在这里预览编辑的输入样例
+        </div>
+        <ul class="list-group" id="editor">
+            <li style="border-style: none" class="list-group-item" id="button">
+                <div id="inSampleEditButton" class="editButton" style="margin: 0 auto auto 45%">
+                    <button id="editInSampleButton" style="margin: -10px auto 0px 65%"
+                            type="button"
+                            class="btn btn-warning "
+                            data-toggle="button">
+                        编辑
+                    </button>
+                </div>
+                <div id="inSampleInsertButton" class="insertButton" style="margin:0 auto auto 45%">
+                    <button id="insertInSampleButton" style="margin: -10px auto 0px 65%"
+                            type="button"
+                            class="btn btn-success "
+                            data-toggle="button">
+                        完成
+                    </button>
+                </div>
+            </li>
+
+            <li class="list-group-item" id="inSample">
+
+            </li>
+        </ul>
+    </div>
+
+    <!--输出格式区域-->
+    <div class="panel panel-info " id="topicOutSample">
+
+        <div class="panel-heading">
+            <h2 class="panel-title">输出样例</h2>
+        </div>
+        <div class="panel-body" id="panel-outSample">
+            在这里预览输出样例内容
+        </div>
+        <ul class="list-group" id="outSampleEditor">
+            <li style="border-style: none" class="list-group-item" id="button">
+                <!--输出格式编辑按钮-->
+                <div id="outSampleEditButton" class="editButton" style="margin: 0 auto auto 45%">
+                    <button id="editoutSampleButton" style="margin: -10px auto 0px 65%"
+                            type="button"
+                            class="btn btn-warning "
+                            data-toggle="button">
+                        编辑
+                    </button>
+                </div>
+                <!--输出格式完成按钮-->
+                <div id="outSampleInsertButton" class="insertButton"
+                     style="margin: 0 auto auto 45%">
+                    <button id="insertOutSampleButton" style="margin: -10px auto 0px 65%"
+                            type="button"
+                            class="btn btn-success "
+                            data-toggle="button">
+                        完成
+                    </button>
+                </div>
+            </li>
+
+            <li class="list-group-item" id="outSample">
+
+            </li>
+        </ul>
+    </div>
+
+
+    <!--运行时限区域-->
+    <div class="panel panel-warning " id="timieLimit">
+
+        <div class="panel-heading">
+            <h2 class="panel-title">运行时限</h2>
+        </div>
+        <div class="panel-body" id="panel-timieLimit">
+            在这里预览输出样例内容
+        </div>
+        <ul class="list-group" id="timieLimitEditor">
+            <li style="border-style: none" class="list-group-item" id="timieLimitArea">
+                <div id="timeArea" class="input-group input-group">
+                    <span class="input-group-addon">运行时限</span>
+                    <input id="timeInput" type="text" class="form-control" placeholder="请在这里输入运行时限，单位为ms">
+                    <button onclick="update('/updateTimeLimitById','timeInput','panel-timieLimit')" id="timeButton"
+                            type="button"
+                            class="btn btn-warning popover-toggle"
+                            title="Popover title" data-container="body"
+                            data-toggle="popover" data-placement="right"
+                            data-content="输入为空（◐ˍ◑） 或 不是合法数字(:з」∠)_">
+                        编辑
+                    </button>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <!--内存限制区域-->
+    <div class="panel panel-info " id="memoryLimit">
+
+        <div class="panel-heading">
+            <h2 class="panel-title">内存限制</h2>
+        </div>
+        <div class="panel-body" id="panel-memoryLimit">
+            在这里预览输出样例内容
+        </div>
+        <ul class="list-group" id="memoryLimitEditor">
+            <li style="border-style: none" class="list-group-item" id="memoryLimitArea">
+                <div id="memoryArea" class="input-group input-group">
+                    <span class="input-group-addon">内存限制</span>
+                    <input id="memoryInput" type="text" class="form-control" placeholder="请在这里输入内存限制，单位为KB">
+                    <button onclick="update('/updateMemoryLimitById','memoryInput','panel-memoryLimit')"
+                            id="memoryButton" type="button"
+                            class="btn btn-warning popover-toggle"
+                            title="Popover title" data-container="body"
+                            data-toggle="popover" data-placement="right"
+                            data-content="输入为空（◐ˍ◑） 或 不是合法数字(:з」∠)_">
+                        编辑
+                    </button>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <!--题目分数区域-->
+    <div class="panel panel-warning " id="topicScore">
+
+        <div class="panel-heading">
+            <h2 class="panel-title">题目分数</h2>
+        </div>
+        <div class="panel-body" id="panel-topicScore">
+            在这里预览输出样例内容
+        </div>
+        <ul class="list-group" id="topicScoreEditor">
+            <li style="border-style: none" class="list-group-item" id="topicScoreArea">
+                <div id="scoreArea" class="input-group input-group">
+                    <span class="input-group-addon">题目分数</span>
+                    <input id="scoreInput" type="text" class="form-control" placeholder="请在这里输入题目分数">
+                    <button onclick="update('/updateTopicScoreById','scoreInput','panel-topicScore')" id="scoreButton"
+                            type="button"
+                            class="btn btn-warning popover-toggle"
+                            title="Popover title" data-container="body"
+                            data-toggle="popover" data-placement="right"
+                            data-content="输入为空（◐ˍ◑） 或 不是合法数字(:з」∠)_">
+                        编辑
+                    </button>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+</div>
+
+<!--页脚-->
+<footer style="padding-top: 20px;padding-bottom: 20px;margin-top: 40px;background-color: #181818" id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="footerbottom">
+                <h4 style="text-align: center;color:#d9d9d9">Copyright 2018 @ <a style="color: #ff9022"
+                                                                                 href="http://valcanoshan.cn">Valcanoshan</a>
+                </h4>
+                <p style="color: #f2f2f2;text-align: center">Power By huoshan</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    var id = 0;
+    window.onload = function () {
+        $(".insertButton").hide();
+        id = window.location.search.substr(1, id.length);
+        var d = {};
+        d.id = id;
+        $.ajax({
+            url: "/editTopic",
+            data: JSON.stringify(d),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            success: function (topic) {
+                //标题
+                var title = $("#panel-title");
+                title.html(topic.topic_title);
+                //内容
+                var content = $("#panel-content");
+                content.html(topic.topic_content);
+                //输入格式
+                var in_format = $("#panel-informat");
+                in_format.html(topic.input_format);
+                //输出格式
+                var out_format = $("#panel-outformat");
+                out_format.html(topic.output_format);
+                //输入样例
+                var in_sample = $("#panel-inSample");
+                in_sample.html(topic.input_sample);
+                //输出样例
+                var out_sample = $("#panel-outSample");
+                out_sample.html(topic.output_sample);
+                //运行时限
+                var time_limit = $("#panel-timieLimit");
+                time_limit.html(topic.time_limit + "（ms）");
+                //内存限制
+                var memory_limit = $("#panel-memoryLimit");
+                memory_limit.html(topic.memory_limit + "（KB）");
+                //题目分数
+                var topic_score = $("#panel-topicScore");
+                topic_score.html(topic.topic_score);
+
+            }, error: function (topic) {
+                alert("emmmmmm....数据库还没准备好");
+            }
+        });
+    }
+    //标题编辑按钮
+    $("#editTitleButton").click(function () {
+        createEditor("topicTitle", "title", "titleInsertButton");
+    });
+    //标题完成按钮
+    $("#insertTitleButton").click(function () {
+        insert('titleInsertButton', 'title', 'panel-title', '/updateTitle');
+    });
+    //内容编辑按钮
+    $("#editContentButton").click(function () {
+        createEditor("topicContent", "content", "contentInsertButton");
+    });
+    //内容完成按钮
+    $("#insertContentButton").click(function () {
+        insert('contentInsertButton', 'content', 'panel-content', '/updateContent');
+    });
+    //输入格式编辑按钮
+    $("#editInFormatButton").click(function () {
+        createEditor('topicInFormat', 'inFormat', 'inFormatInsertButton');
+    });
+    //输入格式完成按钮
+    $("#insertInFormatButton").click(function () {
+        // alert("dsa");
+        insert('inFormatInsertButton', 'inFormat', 'panel-informat', '/updateInputFormat');
+    });
+
+    //输出格式编辑按钮
+    $("#editoutFormatButton").click(function () {
+        createEditor('topicOutFormat', 'outFormat', 'outFormatInsertButton');
+    });
+    //输出格式完成按钮
+    $("#insertOutFormatButton").click(function () {
+        // alert("dsa");
+        insert('outFormatInsertButton', 'outFormat', 'panel-outformat', '/updateOutputFormat');
+    });
+
+    //输入样例编辑按钮
+    $("#editInSampleButton").click(function () {
+        // alert("dsa");
+        createEditor('topicInSample', 'inSample', 'inSampleInsertButton');
+    });
+    //输入样例完成按钮
+    $("#insertInSampleButton").click(function () {
+        // alert("dsa");
+        insert('inSampleInsertButton', 'inSample', 'panel-inSample', '/updateInputSample');
+    });
+
+    //输出样例编辑按钮
+    $("#editoutSampleButton").click(function () {
+        createEditor('topicOutSample', 'outSample', 'outSampleInsertButton');
+    });
+    //输出样例完成按钮
+    $("#insertOutSampleButton").click(function () {
+        // alert("dsa");
+        insert('outSampleInsertButton', 'outSample', 'panel-outSample', '/updateOutputSample');
+    });
+
+    //返回题库
+    function returnList() {
+        window.location.href = "topicList.html";
+    }
+
+    //编辑按钮函数
+    function createEditor(id, area, insert) {
+        //id:     panel -> id
+        //area:   li -> id
+        //insert: insert -> id
+
+        var editor = "<script id='container' name='content' type='text/plain'><\/script>";
+        var a = $("#" + id).html();
+        var b = $("#" + area);
+        b.append(editor);
+        <!-- 实例化编辑器 -->
+        var editor = UE.getEditor('container');
+        $(".editButton").hide();
+        $("#" + insert).show();
+    }
+
+    //完成编辑插入
+    function insert(id, area, panel, url) {
+        var editor = UE.getEditor('container');
+        var content = editor.getContent();
+        var panelContent = $("#" + panel);
+        panelContent.html(content);
+        panelContent.val(content);
+        UE.getEditor('container').destroy();
+        $("textarea").remove();
+        $(".editButton").show();
+        $("#" + id).hide();
+        getjson(content, url);
+    }
+
+
+    function getjson(content, url) {
+        var d = {};
+        d.topicId = id;
+        d.topicContent = content;
+        $.ajax({
+            url: url,
+            data: JSON.stringify(d),
+            //type、contentType必填,指明传参方式
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            success: function (response) {
+                //前端调用成功后，可以处理后端传回的json格式数据。
+                if (response.success) {
+                    alert(response.message);
+                }
+            }, error: function (response) {
+                alert("emm...." + url + "->>>" + response.message);
+            }
+
+        });
+    }
+
+    //插入运行时限
+    function update(url, area, panel) {
+        var timeLimit = $("#" + area);
+        var reg = /^[0-9]+.?[0-9]*$/;
+        var flag = 1;
+        for (var i = 0; i < timeLimit.val().length; i++) {
+            if (!reg.test(timeLimit.val()[i]))
+                flag = 0;
+        }
+        if (flag == 1 && timeLimit.val().length > 0) {
+            var t = timeLimit.val() + "（ms）";
+            $("#" + panel).html(t);
+            var d = {};
+            d.topicId = id;
+            d.content = timeLimit.val();
+            $.ajax({
+                url: url,//'/updateTimeLimitById'
+                data: JSON.stringify(d),
+                type: 'POST',
+                contentType: "application/json;charset=utf-8",
+                success: function (data) {
+                    queryTopic();
+                    alert("更新运行时限成功~(￣▽￣)~*");
+                },
+                error: function (data) {
+                    alert("emm....");
+                }
+            });
+        } else {
+            alert("输入非法额o(*￣3￣)o")
+            // $('.popover-toggle').popover('toggle');
+        }
+        timeLimit.val('');
+    }
+
+    //插入内存限制
+    function insertTimeLimit() {
+        var timeLimit = $("#timeInput");
+        var reg = /^[0-9]+.?[0-9]*$/;
+        var flag = 1;
+        for (var i = 0; i < timeLimit.val().length; i++) {
+            if (!reg.test(timeLimit.val()[i]))
+                flag = 0;
+        }
+        if (flag == 1 && timeLimit.val().length > 0) {
+            var t = timeLimit.val() + "（ms）";
+            $("#panel-timieLimit").html(t);
+            var d = {};
+            d.topicId = id;
+            d.timeLimit = timeLimit.val();
+            $.ajax({
+                url: '/updateTimeLimitById',
+                data: JSON.stringify(d),
+                type: 'POST',
+                contentType: "application/json;charset=utf-8",
+                success: function (data) {
+                    queryTopic();
+                    alert("更新运行时限成功~(￣▽￣)~*")
+                },
+                error: function (data) {
+                    alert("emm....");
+                }
+            });
+        } else {
+            $('.popover-toggle').popover('toggle');
+        }
+        timeLimit.val('');
+    }
+
+    //Ajax插入获取到的数据
+    function ajaxInsert(content) {
+        $.ajax({
+            url: 'aaa/1',
+            data: {
+                user: content,
+                pass: $('.pass').val()
+            },
+            type: 'POST',
+            success: function (str) {
+                alert(str);
+            },
+            error: function (err) {
+                alert(err);
+            }
+        });
+    }
+</script>
+</body>
+</html>

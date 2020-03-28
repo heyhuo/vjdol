@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Home</title>
+    <link rel="favicon" href="assets/images/favicon.png">
+    <link rel="stylesheet" media="screen" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="bootstrap3/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/bootstrap-theme.css" media="screen">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="css/createTestPoint.css">
+
+    <!-- 富文本配置文件 -->
+    <script type="text/javascript" src="ueditor/ueditor.config.js"></script>
+    <!-- 编辑器源码文件 -->
+    <script type="text/javascript" src="ueditor/ueditor.all.js"></script>
+</head>
+<body>
+<!-- Fixed navbar -->
+<div class="navbar navbar-inverse" style="background:#3d3d3d;z-index: 100">
+    <div class="container">
+        <div class="navbar-header">
+            <!-- Button for smallest screens -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span
+                    class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+            <a class="navbar-brand" href="index.html">
+                <img src="assets/images/logo3.png" style="margin: -5px auto;width:230px;height: 78px;"
+                     alt="Techro HTML5 template"></a>
+        </div>
+        <div style="margin: 30px 100px -10px -100px" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav pull-right mainNav">
+                <li><a href="index.html">首页</a></li>
+                <li>
+                    <a href="examList.html">考试 </a>
+                </li>
+                <li>
+                    <a href="topicList.html">题库</a>
+                </li>
+                <li><a href="login_register.html">登录</a></li>
+            </ul>
+        </div>
+        <!--/.nav-collapse -->
+    </div>
+</div>
+
+<!--完成编辑按钮-->
+<div class="complete">
+    <button onclick="returnList()" type="button" class="btn" id="back">
+        返回列表
+    </button>
+    <button onclick="returnList()" type="button" class="btn" id="complete">
+        完成编辑
+    </button>
+
+</div>
+<!--编辑区域-->
+<div class="editArea">
+    <div class="input-group input-group">
+        <span class="input-group-addon">要创建的测试点数</span>
+        <input id="pointNum" type="text" class="form-control" placeholder="点击这里输入，输入数字范围[ 1 , 8 ]">
+        <button onclick="createPoint()" id="inPoint" type="button" class="btn btn-success popover-toggle"
+                title="创建测试点失败" data-container="body"
+                data-toggle="popover" data-placement="bottom"
+                data-content="输入可能存在非法字符，请重新输入要创建的测试点个数">
+            确定
+        </button>
+    </div>
+    <div class="pointEditArea">
+
+    </div>
+
+</div>
+
+</body>
+<script>
+    var id = 0;
+    window.onload = function () {
+        id = window.location.search.substr(1, id.length);
+
+        queryPoint(id);
+    }
+
+    //查询数据
+    function queryPoint(id) {
+        var d = {};
+        d.topicId = id;
+        $.ajax({
+            url: "/queryPoint",
+            data: JSON.stringify(d),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            success: function (response) {
+                var area = $(".pointEditArea");
+                area.empty();
+                for (var i = 1; i <= response.length; i++) {
+                    var input = response[i - 1].input_data;
+                    input = return2Br(input);
+                    var out = response[i - 1].out_data;
+                    out = return2Br(out);
+                    var str = '';
+                    var type = 'success';
+                    if (i % 3 == 0)
+                        type = 'warning';
+                    else if (i % 3 == 2)
+                        type = 'danger';
+                    var infunction = "'createEditor(" + '"inData","' + i + '"' + ")'";
+                    var outfunction = "'createEditor(" + '"outData","' + i + '"' + ")'";
+                    var inPointFunction = "'insertPoint(" + '"inData","' + i + '"' + ")'";
+                    var outPointFunction = "'insertPoint(" + '"outData","' + i + '"' + ")'";
+                    var deleteFunction = "'deletePoint(" + '"' + i + '")' + "'";
+                    str = '\n' +
+                        '    <div class="panel panel-' + type + '">\n' +
+                        '        <div class="panel-heading">测试点' + i + '</div>\n' +
+                        '        <div class="panel-body" >\n' +
+                        '            <c id="tip1">[ 输入数据 ]</c><input id="inPut' + i + '" type="hidden"><div id="panel-in' + i + '">' + input + '</div>\n' +
+                        '        </div>\n' +
+                        '        <ul class="list-group" id="inDataArea' + i + '">\n' +
+                        '            <li style="border-style: none" class="list-group-item" id="button">\n' +
+                        '                <!--编辑按钮-->\n' +
+                        '                <button onclick=' + infunction + ' type="button" class="btn edit" id="inDataEdit' + i + '">\n' +
+                        '                    编辑\n' +
+                        '                </button>\n' +
+                        '                <button onclick=' + deleteFunction + ' type="button" class="btn delete" id="delete' + i + '">\n' +
+                        '                    删除\n' +
+                        '                </button>\n' +
+                        '                <!--完成按钮-->\n' +
+                        '                <button onclick=' + inPointFunction + ' type="button" class="btn insert" id="inDataInsert' + i + '">\n' +
+                        '                    完成\n' +
+                        '                </button>\n' +
+                        '            </li>\n' +
+                        '            <!--内容-->\n' +
+                        '            <li class="list-group-item" class="inData" id="inData' + i + '">\n' +
+                        '\n' +
+                        '            </li>\n' +
+                        '        </ul>\n' +
+                        '        <div class="panel-body"> \n' +
+                        '            <c id="tip2">[ 输出数据 ]</c><input id="outPut' + i + '" type="hidden"><div id="panel-out' + i + '">' + out + '</div>\n' +
+                        '        </div>\n' +
+                        '        <ul class="list-group" id="outDataArea1">\n' +
+                        '            <li style="border-style: none" class="list-group-item" id="button' + i + '">\n' +
+                        '                <!--编辑按钮-->\n' +
+                        '                <button onclick=' + outfunction + ' type="button" class="btn edit" id="outDataEdit' + i + '">\n' +
+                        '                    编辑\n' +
+                        '                </button>\n' +
+                        '                <!--完成按钮-->\n' +
+                        '                <button onclick=' + outPointFunction + ' type="button" class="btn insert" id="outDataInsert' + i + '">\n' +
+                        '                    完成\n' +
+                        '                <button onclick=' + deleteFunction + ' type="button" class="btn delete" id="delete' + i + '">\n' +
+                        '                    删除\n' +
+                        '                </button>\n' +
+                        '            </li>\n' +
+                        '            <!--内容-->\n' +
+                        '            <li class="list-group-item" class="outData" id="outData' + i + '">\n' +
+                        '\n' +
+                        '            </li>\n' +
+                        '        </ul>\n' +
+                        '    </div>';
+                    area.append(str);
+                    $(".insert").hide();
+                    $(".delete").hide();
+                }
+            }, error: function (response) {
+                alert("emm....");
+            }
+        });
+    }
+
+    //ajax全部删除
+    function deleteAll(num) {
+        var d = {};
+        d.topicId = id;
+        d.pointNum = num;
+        $.ajax({
+            url: "/deleteAll",
+            data: JSON.stringify(d),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            success: function (response) {
+
+            }, error: function (response) {
+                alert("emm....");
+            }
+        });
+    }
+
+    //ajax插入
+    function createNew(i, id) {
+        var d = {};
+        d.pointId = i;
+        d.topicId = id;
+        $.ajax({
+            url: "/insertTestPoint",
+            data: JSON.stringify(d),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            success: function (response) {
+
+            }, error: function (response) {
+                alert("emm....");
+            }
+        });
+    }
+
+    //插入测试点
+    function createPoint() {
+        var num = $("#pointNum");
+        var reg = /^[0-9]+.?[0-9]*$/;
+        var flag = 1;
+        for (var i = 0; i < num.val().length; i++) {
+            if (!reg.test(num.val()[i]))
+                flag = 0;
+        }
+        if (flag && (num.val() >= 1 && num.val() <= 8)) {
+            var len = num.val();
+            var msg = "是否要创建" + len + "个测试点？\n\n之前的数据可能会被覆盖";
+            if (confirm(msg) == true) {
+                deleteAll(len);
+                //删除富文本
+                // UE.getEditor('container').destroy();
+                // $("textarea").remove();
+                var area = $(".pointEditArea");
+                area.empty();
+                for (var i = 1; i <= len; i++) {
+                    createNew(i, id);
+                    var str = '';
+                    var type = 'success';
+                    if (i % 3 == 0)
+                        type = 'warning';
+                    else if (i % 3 == 2)
+                        type = 'danger';
+                    var infunction = "'createEditor(" + '"inData","' + i + '"' + ")'";
+                    var outfunction = "'createEditor(" + '"outData","' + i + '"' + ")'";
+                    var inPointFunction = "'insertPoint(" + '"inData","' + i + '"' + ")'";
+                    var outPointFunction = "'insertPoint(" + '"outData","' + i + '"' + ")'";
+                    var deleteFunction = "'deletePoint(" + '"' + i + '")' + "'";
+                    str = '\n' +
+                        '    <div class="panel panel-' + type + '">\n' +
+                        '        <div class="panel-heading">测试点' + i + '</div>\n' +
+                        '        <div class="panel-body" >\n' +
+                        '            <c id="tip1">[ 输入数据 ]</c><input id="inPut' + i + '" type="hidden"><div id="panel-in' + i + '">在这里预览测试点输入数据</div>\n' +
+                        '        </div>\n' +
+                        '        <ul class="list-group" id="inDataArea' + i + '">\n' +
+                        '            <li style="border-style: none" class="list-group-item" id="button">\n' +
+                        '                <!--编辑按钮-->\n' +
+                        '                <button onclick=' + infunction + ' type="button" class="btn edit" id="inDataEdit' + i + '">\n' +
+                        '                    编辑\n' +
+                        '                </button>\n' +
+                        '                <!--完成按钮-->\n' +
+                        '                <button onclick=' + inPointFunction + ' type="button" class="btn insert" id="inDataInsert' + i + '">\n' +
+                        '                    完成\n' +
+                        '                </button>\n' +
+                        '            </li>\n' +
+                        '            <!--内容-->\n' +
+                        '            <li class="list-group-item" class="inData" id="inData' + i + '">\n' +
+                        '\n' +
+                        '            </li>\n' +
+                        '        </ul>\n' +
+                        '        <div class="panel-body"> \n' +
+                        '            <c id="tip2">[ 输出数据 ]</c><input id="outPut"' + i + ' type="hidden"><div id="panel-out' + i + '">在这里预览测试点输出数据</div>\n' +
+                        '        </div>\n' +
+                        '        <ul class="list-group" id="outDataArea1">\n' +
+                        '            <li style="border-style: none" class="list-group-item" id="button' + i + '">\n' +
+                        '                <!--编辑按钮-->\n' +
+                        '                <button onclick=' + outfunction + ' type="button" class="btn edit" id="outDataEdit' + i + '">\n' +
+                        '                    编辑\n' +
+                        '                </button>\n' +
+                        '                <!--完成按钮-->\n' +
+                        '                <button onclick=' + outPointFunction + ' type="button" class="btn insert" id="outDataInsert' + i + '">\n' +
+                        '                    完成\n' +
+                        '                <button onclick=' + deleteFunction + ' type="button" class="btn delete" id="delete' + i + '">\n' +
+                        '                    删除\n' +
+                        '                </button>\n' +
+                        '            </li>\n' +
+                        '            <!--内容-->\n' +
+                        '            <li class="list-group-item" class="outData" id="outData' + i + '">\n' +
+                        '\n' +
+                        '            </li>\n' +
+                        '        </ul>\n' +
+                        '    </div>';
+                    area.append(str);
+                    $(".insert").hide();
+                }
+            }
+            else {
+                return false;
+            }
+        } else {
+            $('.popover-toggle').popover('toggle');
+            num.val('');
+        }
+    }
+
+    function insertData(area, pointId, content) {
+        var urlPath;
+        if (area == "inData")
+            urlPath = "/editInputData";
+        else
+            urlPath = "/editOutputData";
+        var d = {};
+        d.pointId = pointId;
+        d.topicId = id;
+        d.content = content;
+        $.ajax({
+            url: urlPath,
+            data: JSON.stringify(d),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            success: function (response) {
+                queryPoint(id);
+                // alert("编辑成功 (￣▽￣)~*");
+            }, error: function (response) {
+                alert("emm....");
+            }
+        });
+    }
+
+    //编辑按钮函数
+    function createEditor(area, id) {
+        var editor = "<script id='container' name='content' type='text/plain'><\/script>";
+
+        var b = $("#" + area + id);
+        b.append(editor);
+
+        <!-- 实例化编辑器 -->
+        var editor = UE.getEditor('container');
+
+        $(".edit").hide();
+        // $(".delete").show();
+        // $("#inPoint").hide();
+
+        if (area == "inData")
+            $("#inDataInsert" + id).show();
+        else
+            $("#outDataInsert" + id).show();
+
+    }
+
+    //转义过滤
+    function htmldecode(str) {
+        str = str.replace(/&amp;/gi, '&');
+        str = str.replace(/&nbsp;/gi, ' ');
+        str = str.replace(/&quot;/gi, '"');
+        str = str.replace(/&#39;/g, "'");
+        str = str.replace(/&lt;/gi, '<');
+        str = str.replace(/&gt;/gi, '>');
+        str = str.replace(/<br[^>]*>(?:(rn)|r|n)?/gi, 'n');
+        str = str.replace(/^((\s|&nbsp;)*\r?\n)+/g, '');//清除开头换行
+        str.replace(/((\s|&nbsp;)*\r?\n)+$/g, '');//清除结尾换行
+        return str;
+    }
+
+    //换行转</br>
+    function return2Br(str) {
+        str = str.replace(/\r?\n/g, "<br>");
+        str = str.replace(/\s/g, "&nbsp;");
+        return str;
+    }
+
+    //完成按钮
+    function insertPoint(area, id) {
+        var editor = UE.getEditor('container');
+        var content = editor.getPlainTxt();
+        var panelContent;
+        if (area == "inData") {
+            $("#inPut" + id).val(content);
+            panelContent = document.getElementById("panel-in" + id);
+
+        } else {
+            panelContent = document.getElementById("panel-out" + id);
+        }
+        panelContent.innerHTML = "";
+        content = htmldecode(content);
+        panelContent.append(content);
+        UE.getEditor('container').destroy();
+        $("textarea").remove();
+        $(".edit").show();
+        $(".delete").show();
+        // $("#inPoint").show();
+        if (area == "inData") {
+            $("#inDataInsert" + id).hide();
+        }
+
+        else
+            $("#outDataInsert" + id).hide();
+        //插入数据
+
+        insertData(area, id, content);
+    }
+
+
+    //删除测试点
+    function deletePoint(id) {
+        UE.getEditor('container').destroy();
+        $("textarea").remove();
+        $(".edit").show();
+        $(".delete").show();
+    }
+
+    //返回题库
+    function returnList() {
+        window.location.href = "topicList.html";
+    }
+
+</script>
+</html>

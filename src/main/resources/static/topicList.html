@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>TopicList</title>
+    <link rel="favicon" href="assets/images/favicon.png">
+    <link rel="stylesheet" media="screen" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="bootstrap3/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/bootstrap-theme.css" media="screen">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="js/selectivity-jquery.css">
+    <script src="js/selectivity-jquery.js"></script>
+
+</head>
+
+
+<style type="text/css">
+
+    #myTab {
+        margin: 30px auto auto 30px;
+    }
+
+</style>
+<body>
+<!-- Fixed navbar -->
+<div class="navbar navbar-inverse" style="background:#3d3d3d;z-index: 100">
+    <div class="container">
+        <div class="navbar-header">
+            <!-- Button for smallest screens -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span
+                    class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+            <a class="navbar-brand" href="index.html">
+                <img src="assets/images/logo3.png" style="margin: -5px auto;width:230px;height: 78px;"
+                     alt="Techro HTML5 template"></a>
+        </div>
+        <div style="margin: 30px 100px -10px -100px" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav pull-right mainNav">
+                <li><a href="index.html">首页</a></li>
+                <li>
+                    <a href="examList.html">考试 </a>
+                </li>
+                <li class="active">
+                    <a href="topicList.html">题库</a>
+                </li>
+                <li><a href="login_register.html">登录</a></li>
+            </ul>
+        </div>
+        <!--/.nav-collapse -->
+    </div>
+</div>
+
+<ul id="myTab" class="nav nav-tabs">
+    <li class="active">
+        <a style="font-style: italic;letter-spacing:2px;font-size:16px;background-color: #2d6ca2;color: white"
+           href="#home" data-toggle="tab">
+            题目列表
+        </a>
+    </li>
+    <!--<li><a style="font-style: italic;letter-spacing:2px;font-size:16px;background-color: #ac46b5;color: white"-->
+           <!--href="#paper" data-toggle="tab">-->
+        <!--试卷列表-->
+    <!--</a></li>-->
+
+    <li><a style="font-style: italic;letter-spacing:2px;font-size:16px;background-color: #cb7b2d;color: white"
+           href="#ios" data-toggle="tab">
+        答卷列表
+    </a></li>
+
+</ul>
+
+
+<div id="myTabContent" class="tab-content">
+    <div class="tab-pane fade in active" id="home">
+
+        <!--新建题目按钮-->
+        <div style="margin: 20px auto -10px 10%" class="createNewTopic">
+            <button style="background-color: #197fd7;color: white" onclick="createTopic()"
+                    id="createNewTopicButton"
+                    class="btn-lg">新建题目
+            </button>
+            <!--<button type="button" style="margin-left: 265px;background-color: #05a339;color: white" onclick="createTopic()"-->
+            <!--id="ensureButton"-->
+            <!--class="btn-lg">确认添加-->
+            <!--</button>-->
+
+            <button id="ensureButton" onclick="ensureCreate()"
+                    style="font-size: 16px;margin-top: -6px;margin-left: 265px;background-color: #05a339;width:90px;height:43px;color: white "
+                    type="button" class="btn btn-success popover-toggle"
+                    title="添加失败" data-container="body"
+                    data-toggle="popover" data-placement="bottom"
+                    data-content="输入非法 或 此题目编号已存在">
+                确认添加
+            </button>
+
+
+            <button style="margin-left: 5px;background-color: #d34230;color: white" onclick="cancelCreate()"
+                    id="cancelButton"
+                    class="btn-lg">取消
+            </button>
+
+            <input id="newTopicId" style="position:absolute;margin:-43px auto auto 0px;width: 20%"
+                   type="text"
+                   class="form-control" required placeholder="请在这里输入题目编号">
+
+        </div>
+
+        <!--题目列表-->
+        <div style="margin: 30px auto auto auto;width: 1150px" class="table-responsive" id="topic">
+            <table class="table table-hover table-bordered table-striped">
+                <thead style="background-color: #197fd7;color: white;font-size: 14px;font-style: italic;letter-spacing: 2px;">
+                <tr>
+                    <th>题目号</th>
+                    <th>题目标题</th>
+                    <th>通过率(Accepted/Submit)</th>
+                    <th>运行时限</th>
+                    <th>内存限制</th>
+                    <th>题目分数</th>
+                    <th>测试点数</th>
+                    <th>发布状态</th>
+                    <th>编辑题目</th>
+                    <th>编辑测试点</th>
+                    <th>删除</th>
+                    <th>发布题目</th>
+                </tr>
+                </thead>
+                <tbody id="topicListBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!--<div class="tab-pane fade" id="paper">-->
+
+        <!--&lt;!&ndash;试卷列表&ndash;&gt;-->
+        <!--<div style="margin: 30px auto auto auto;width: 1150px" class="table-responsive" id="topic">-->
+            <!--<button style="background-color: #c06bba;color: white;margin: 0 auto 20px 70px"-->
+                    <!--class="btn btn-primary btn-lg"-->
+                    <!--data-toggle="modal" data-target="#myModal">-->
+                <!--新建试卷-->
+            <!--</button>-->
+            <!--&lt;!&ndash; 模态框（Modal） &ndash;&gt;-->
+            <!--<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"-->
+                 <!--aria-hidden="true">-->
+                <!--<div class="modal-dialog">-->
+                    <!--<div class="modal-content">-->
+                        <!--<div class="modal-header">-->
+                            <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">-->
+                                <!--&times;-->
+                            <!--</button>-->
+                            <!--<h4 class="modal-title" id="myModalLabel">-->
+                                <!--模态框（Modal）标题-->
+                            <!--</h4>-->
+                        <!--</div>-->
+                        <!--<div class="modal-body">-->
+                            <!--<div style="width: 100%; height: 60px;">-->
+
+                                <!--<h4 style="float: left; width: 11%; margin-left: 10px;">第一题</h4>-->
+                                <!--<div id="selectquestion1"-->
+                                     <!--style="float: left; width: 36%; margin-bottom: 10px;"></div>-->
+                                <!--<h4 style="float: left; width: 11%; margin-left: 10px;">第二题</h4>-->
+                                <!--<div id="selectquestion2"-->
+                                     <!--style="float: left; width: 36%; margin-bottom: 10px;"></div>-->
+                            <!--</div>-->
+
+                            <!--<div style="width: 100%; height: 60px;">-->
+                                <!--<h4 style="float: left; width: 11%; margin-left: 10px;">第三题</h4>-->
+                                <!--<div id="selectquestion3"-->
+                                     <!--style="float: left; width: 36%; margin-bottom: 10px;"></div>-->
+                                <!--<h4 style="float: left; width: 11%; margin-left: 10px;">第四题</h4>-->
+                                <!--<div id="selectquestion4"-->
+                                     <!--style="float: left; width: 36%; margin-bottom: 10px;"></div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="modal-footer">-->
+                            <!--<button style="background-color: #cc0000;color:#fff;" type="button" class="btn btn-primary"-->
+                                    <!--data-dismiss="modal">关闭-->
+                            <!--</button>-->
+                            <!--<button style="background-color: #0E9A00;color: white" type="button"-->
+                                    <!--class="btn btn-primary">-->
+                                <!--提交更改-->
+                            <!--</button>-->
+                        <!--</div>-->
+                    <!--</div>&lt;!&ndash; /.modal-content &ndash;&gt;-->
+                <!--</div>&lt;!&ndash; /.modal &ndash;&gt;-->
+            <!--</div>-->
+
+            <!--<table class="table table-hover table-bordered table-striped">-->
+                <!--<thead style="background-color: #ac46b5;color: white;font-size: 16px;font-style: italic;letter-spacing: 4px;">-->
+                <!--<tr>-->
+                    <!--<th>试卷编号</th>-->
+                    <!--<th>题号</th>-->
+                    <!--<th>题目名称</th>-->
+                    <!--<th>通过数</th>-->
+                    <!--<th>提交次数</th>-->
+                    <!--<th>查看</th>-->
+                <!--</tr>-->
+                <!--</thead>-->
+                <!--<tbody id="topicPaperListBody">-->
+                <!--<td>-->
+                    <!--<tr>0</tr>-->
+                    <!--<tr>1</tr>-->
+                    <!--<tr>1</tr>-->
+                    <!--<tr>1</tr>-->
+                    <!--<tr>1</tr>-->
+                    <!--<tr>11</tr>-->
+                <!--</td>-->
+                <!--<td>-->
+                    <!--<tr>0</tr>-->
+                    <!--<tr>1</tr>-->
+                    <!--<tr>1</tr>-->
+                    <!--<tr>1</tr>-->
+                    <!--<tr>1</tr>-->
+                    <!--<tr>11</tr>-->
+                <!--</td>-->
+                <!--</tbody>-->
+
+
+            <!--</table>-->
+        <!--</div>-->
+    <!--</div>-->
+
+
+    <div class="tab-pane fade" id="ios">
+        <!--题目列表-->
+        <div style="margin: 30px auto auto auto;width: 1150px" class="table-responsive" id="topic">
+            <table class="table table-hover table-bordered table-striped">
+                <thead style="background-color: #d78259;color: white;font-size: 16px;font-style: italic;letter-spacing: 4px;">
+                <tr>
+                    <th>试卷编号</th>
+                    <th>题号</th>
+                    <th>学号</th>
+                    <th>提交次数</th>
+                    <th>题目得分</th>
+                    <th>查看</th>
+                </tr>
+                </thead>
+                <tbody id="paperListBody">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div class="diversion" style="margin: 50px auto auto 38%">
+    <ul class="pagination">
+        <li><a href="#">&laquo;</a></li>
+        <li class="active"><a href="#">1</a></li>
+        <li class="disabled"><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#">4</a></li>
+        <li><a href="#">5</a></li>
+        <li><a href="#">&raquo;</a></li>
+    </ul>
+</div>
+
+
+<footer style="background-color: #181818" id="footer">
+    <div class="container" style="width:100%;min-height:100%;position:relative;">
+        <div class="row">
+            <div class="footerbottom">
+                <h4 style="text-align: center;color:#f2f2f2">Copyright 2018 @ <a style="color: #ff9022"
+                                                                                 href="http://valcanoshan.cn">Valcanoshan</a>
+                </h4>
+                <p style="color: gray;text-align: center">Power By huoshan</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+
+    window.onload = function () {
+        //查询题目
+        queryTopic();
+        //查询试卷
+        queryPaper();
+
+        $("#ensureButton").hide();
+        $("#cancelButton").hide();
+        $("#newTopicId").hide();
+
+
+    }
+    // var answerColor = "";
+    // //查询得分
+    // function queryScore() {
+    //
+    // }
+    //查询试卷
+    function queryPaper() {
+        var tbody = $("#paperListBody");
+        tbody.empty();
+        var d = {};
+        $.ajax({
+            url: "/queryTopicAnswer",
+            data: d,
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            success: function (response) {
+                for (i = 0; i < response.length; i++) {
+                    var str = "";
+                    str += "<tr>" +
+                        "<td>" + response[i].paper_id + "</td>" +
+                        "<td>" + response[i].topic_id + "</td>" +
+                        "<td>" + response[i].stu_no + "</td>" +
+                        "<td>" + response[i].submit_num + "</td>" +
+                        "<td>" + response[i].topic_socre + "</td>" +
+                        "<td><button onclick='stuAnswer(" + (i + 1) + ")' style='color: white;background-color: #d98756' class='btn' >查看</button>" + "</td > " +
+                        "</tr>";
+                    tbody.append(str);
+
+                }
+            }, error: function (response) {
+                alert("emm....列表数据还在路上`o&o`");
+            }
+        });
+    }
+
+    //查看学生考卷
+    function stuAnswer(id) {
+        window.location.href = "stuPaper.html?" + id;
+    }
+
+    //添加题目
+    function createTopic() {
+        $("#createNewTopicButton").fadeOut();
+        $("#ensureButton").fadeIn();
+        $("#cancelButton").fadeIn();
+        $("#newTopicId").fadeIn();
+    }
+
+    //确认创建
+    function ensureCreate() {
+        var d = {};
+        var id = $("#newTopicId").val();
+        var reg = /^[0-9]+.?[0-9]*$/;
+        if (!reg.test(id)) {
+            $('.popover-toggle').popover('toggle');
+        } else {
+            d.id = id;
+            $.ajax({
+                url: "/createTopic",
+                data: JSON.stringify(d),
+                type: "POST",
+                contentType: "application/json;charset=utf-8",
+                success: function (response) {
+                    if (response.flag) {
+                        var msg = "添加题目成功~ \n继续编辑? 取消?";
+                        if (confirm(msg) == true) {
+                            $(location).attr('href', '/createTopic.html?' + id);
+                        } else {
+
+                            queryTopic();
+                            return false;
+                        }
+                    } else {
+                        $('.popover-toggle').popover('toggle');
+                    }
+                }, error: function (response) {
+                    alert("emmmmmm....数据库还没准备好");
+                }
+            });
+            $("#newTopicId").val('');
+        }
+
+    }
+
+    //取消创建
+    function cancelCreate() {
+        $("#ensureButton").fadeOut();
+        $("#cancelButton").fadeOut();
+        $("#newTopicId").fadeOut();
+        $("#createNewTopicButton").fadeIn();
+    }
+
+    //    删除题目
+    function deleteTopic(id) {
+        var msg = "确定要删除此题目吗？\n\n确认或取消！";
+        if (confirm(msg) == true) {
+            var d = {};
+            d.topicId = id;
+            $.ajax({
+                url: "/deleteTopicById",
+                data: JSON.stringify(d),
+                //type、contentType必填,指明传参方式
+                type: "POST",
+                contentType: "application/json;charset=utf-8",
+                success: function (response) {
+                    queryTopic();
+                    // alert("删除 -> " + id + " 成功 `^ç^`");
+                }, error: function (response) {
+                    alert("emm....");
+                }
+            });
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    //    编辑题目
+    function editTopic(id) {
+        window.location.href = "createTopic.html?" + id;
+    }
+
+    //编辑测试点
+    function editPoint(id) {
+        window.location.href = "createTestPoint.html?" + id;
+    }
+
+    //查询是否符合发布要求
+    function queryState(id) {
+        // alert(id);
+        var d = {};
+        var flag = 0;
+        d.topicId = id;
+        $.ajax({
+            url: "/queryState",
+            data: JSON.stringify(d),
+            type: "POST",
+            async: false,
+            contentType: "application/json;charset=utf-8",
+            success: function (response) {
+
+                if (response.success == true) {
+                    flag = 1;
+                } else {
+                    alert(response.message);
+                    flag = 2;
+                }
+            }, error: function (response) {
+                alert("emm....");
+            }
+        });
+        return flag;
+    }
+
+    //管理发布状态
+    function deliverTopic(id, flag) {
+        id++;
+        var msg;
+        var stateFlag;
+        if (flag == "true") {
+            msg = "确定要将此题目下架？？\n\n确认或取消！";
+            flag = "false";
+            stateFlag = 1;
+        }
+        else {
+            msg = "确定要发布此题目？？\n\n确认或取消！";
+            stateFlag = queryState(id);
+            flag = "true";
+        }
+        if (stateFlag == 1) {
+            if (confirm(msg) == true) {
+                var d = {};
+                d.state = flag;
+                d.topicId = id;
+                $.ajax({
+                    url: "/editState",
+                    data: JSON.stringify(d),
+                    type: "POST",
+                    contentType: "application/json;charset=utf-8",
+                    success: function (response) {
+                        // alert("题目发布成功(￣▽￣)~*");
+                        queryTopic();
+                    }, error: function (response) {
+                        alert("emm....");
+                    }
+                });
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+    }
+
+    function removeHTML(str) {
+        var reTag = /<(?:.|\s)*?>/g;
+        return str.replace(reTag, "");
+    }
+
+    //ajax查询数据库更新列表
+    function queryTopic() {
+        var tbody = $("#topicListBody");
+        tbody.empty();
+        var d = {};
+        $.ajax({
+            url: "/queryAllTopic",
+            data: {},
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            success: function (response) {
+                var l = [];
+                for (i = 0; i < response.length; i++) {
+                    var id = response[i].topic_id;
+                    var str = "";
+                    var state;
+                    var color;
+                    var flag = response[i].publish_state;
+                    var title = response[i].topic_title;
+                    if (response[i].topic_title == null) {
+                        title = "还没编辑题目哟~";
+                    }
+                    if (flag == false) {
+                        state = "发布";
+                        color = "#05a339";
+                    } else {
+                        state = "撤下";
+                        color = "#d34230";
+                    }
+                    var disabled = '';
+                    if (response[i].publish_state) {
+                        disabled = "disabled=''";
+                    }
+                    var deliver = "deliverTopic(" + '"' + i + '","' + flag + '"' + ")";
+                    str += "<tr>" +
+                        "<td>" + response[i].topic_id + "</td>" +
+                        "<td>" + title + "</td>" +
+                        "<td>" + response[i].accepted + " / " + response[i].total_submit + "</td>" +
+                        "<td>" + response[i].time_limit + "（ms）</td>" +
+                        "<td>" + response[i].memory_limit + "（KB）</td>" +
+                        "<td>" + response[i].topic_score + "</td>" +
+                        "<td>" + response[i].point_num + "</td>" +
+                        "<td>" + response[i].publish_state + "</td>" +
+                        "<td><button onclick='editTopic(" + id + ")' style='color: white;background-color: #0287d7' class='btn' " + disabled + ">编辑</button>" + "</td>" +
+                        "<td><button onclick='editPoint(" + id + ")' style='color: white;background-color: #d775c0' class='btn'" + disabled + ">编辑</button>" + "</td>" +
+                        "<td><button onclick='deleteTopic(" + id + ")' style='color: white;background-color: #d36d16' class='btn'>删除</button>" + "</td>" +
+                        "<td><button onclick='" + deliver + "' style='color: white;background-color: " + color + "' class='btn'>" + state + "</button>" + "</td>"
+                    "</tr>";
+                    tbody.append(str);
+                    l.push(response[i].topic_id + "." + removeHTML(response[i].topic_title));
+                }
+
+                // for (var i = 1; i <= 4; i++) {
+                //     $("#selectquestion" + i).selectivity({
+                //         allowClear: true,
+                //         // multiple:true,
+                //         items: l,
+                //         placeholder: '请选择'
+                //     });
+                // }
+            }, error: function (response) {
+                alert("emm....列表数据还在路上`o&o`");
+            }
+        });
+    }
+
+
+</script>
+
+</body>
+</html>
